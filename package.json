@@ -1,5 +1,5 @@
 {
-  "name": "ngx-local-storage",
+  "name": "@ruanitto/ngx-local-storage",
   "version": "1.0.0",
   "description": "Angular localStorage and sessionStorage service",
   "main": "dist/index.js",
