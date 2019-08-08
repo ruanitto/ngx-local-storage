@@ -1,0 +1,36 @@
+{
+  "name": "ngx-local-storage",
+  "version": "1.0.0",
+  "description": "Angular localStorage and sessionStorage service",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ngc -p ./tsconfig.json && tsc -p ./tsconfig.json",
+    "prebuild": "rimraf ./dist ./compiled && mkdir dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruanitto/ngx-local-storage.git"
+  },
+  "keywords": [
+    "ngx",
+    "localStorage",
+    "sessionStorage",
+    "ruanitto",
+    "angular",
+    "angular",
+    "localstorage"
+  ],
+  "author": "Rafael Gomes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ruanitto/ngx-local-storage/issues"
+  },
+  "homepage": "https://github.com/ruanitto/ngx-local-storage#readme",
+  "devDependencies": {
+    "@angular/compiler": "^8.2.0",
+    "@angular/compiler-cli": "^8.2.0",
+    "@angular/core": "^8.2.0",
+    "rxjs": "^6.5.2",
+    "typescript": "^3.5.3"
+  }
+}
