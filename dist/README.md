@@ -1,4 +1,4 @@
-# @ruanitto/ngx-local-storage
+# angular-2-local-storage
 
 LocalStorageService for Angular with mostly the same API (and most of the code) from [angular-local-storage](https://github.com/grevory/angular-local-storage).
 
@@ -11,14 +11,14 @@ AoT compatible.
 
 ## Install
 
-`npm install @ruanitto/ngx-local-storage`
+`npm install angular-2-local-storage`
 
 ## Usage
 
 You can optionally configure the module:
 
 ```typescript
-import { LocalStorageModule } from '@ruanitto/ngx-local-storage';
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 @NgModule({
     imports: [
@@ -41,7 +41,7 @@ export class AppModule { }
 Then you can use it in a component:
 
 ```typescript
-import { LocalStorageService } from '@ruanitto/ngx-local-storage';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Component({
     // ...
@@ -58,4 +58,4 @@ export class SomeComponent {
 
 ### Configuration options
 
-`import { ILocalStorageServiceConfig } from '@ruanitto/ngx-local-storage';` for type information about the configuration object.
+`import { ILocalStorageServiceConfig } from 'angular-2-local-storage';` for type information about the configuration object.

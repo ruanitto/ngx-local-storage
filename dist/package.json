@@ -1,9 +1,9 @@
 {
   "name": "@ruanitto/ngx-local-storage",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "LocalStorageService for Angular with mostly the same API (and most of the code) from angular-local-storage",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "bundles/ruanitto-ngx-local-storage.umd.js",
+  "typings": "ruanitto-ngx-local-storage.d.ts",
   "author": "Craig Spence <craigspence0@gmail.com>",
   "keywords": [
     "ngx",
@@ -14,9 +14,6 @@
     "angular",
     "localstorage"
   ],
-  "scripts": {
-    "build": "ng-packagr"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ruanitto/ngx-local-storage.git"
@@ -33,17 +30,13 @@
     "@angular/platform-browser": ">=7.0.0",
     "rxjs": ">6.0.0"
   },
-  "devDependencies": {
-    "@angular/common": "10.0.3",
-    "@angular/compiler": "10.0.3",
-    "@angular/compiler-cli": "10.0.3",
-    "@angular/core": "10.0.3",
-    "@angular/platform-browser": "10.0.3",
-    "@angular/platform-server": "10.0.3",
-    "ng-packagr": "^10.0.1",
-    "rxjs": "6.6.0",
-    "tsickle": "^0.39.1",
-    "typescript": "3.9.6",
-    "zone.js": "0.10.3"
+  "module": "fesm2015/ruanitto-ngx-local-storage.js",
+  "es2015": "fesm2015/ruanitto-ngx-local-storage.js",
+  "esm2015": "esm2015/ruanitto-ngx-local-storage.js",
+  "fesm2015": "fesm2015/ruanitto-ngx-local-storage.js",
+  "metadata": "ruanitto-ngx-local-storage.metadata.json",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^2.0.0"
   }
 }
