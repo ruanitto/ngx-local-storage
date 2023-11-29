@@ -4,7 +4,11 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["dom", "es6"],
+    "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "dom",
+      "es6"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
@@ -17,15 +21,13 @@
     "importHelpers": true,
     "types": [],
   },
-
   "files": [
     "./src/index.ts"
   ],
-
   "angularCompilerOptions": {
     "genDir": "compiled",
     "debug": true,
-    "skipMetadataEmit" : false,
+    "skipMetadataEmit": false,
     "strictMetadataEmit": true,
     "annotateForClosureCompiler": true,
     "skipTemplateCodegen": true,

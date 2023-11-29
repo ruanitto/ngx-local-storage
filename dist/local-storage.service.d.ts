@@ -1,6 +1,7 @@
-import { Observable } from 'rxjs';
-import { ILocalStorageEvent } from './local-storage-events.interface';
-import { ILocalStorageServiceConfig } from './local-storage.config.interface';
+import { Observable } from "rxjs";
+import { ILocalStorageEvent } from "./local-storage-events.interface";
+import { ILocalStorageServiceConfig } from "./local-storage.config.interface";
+import * as i0 from "@angular/core";
 export declare class LocalStorageService {
     isSupported: boolean;
     errors$: Observable<string>;
@@ -11,6 +12,8 @@ export declare class LocalStorageService {
     private prefix;
     private storageType;
     private webStorage;
+    private encryptData;
+    private key;
     private errors;
     private removeItems;
     private setItems;
@@ -26,7 +29,12 @@ export declare class LocalStorageService {
     remove(...keys: Array<string>): boolean;
     set(key: string, value: any): boolean;
     private checkSupport;
+    private setEncryptKey;
     private setPrefix;
-    setStorageType(storageType: 'sessionStorage' | 'localStorage'): void;
+    setStorageType(storageType: "sessionStorage" | "localStorage"): void;
     private setNotify;
+    private encrypt;
+    private decrypt;
+    static ɵfac: i0.ɵɵFactoryDeclaration<LocalStorageService, [{ optional: true; }]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<LocalStorageService>;
 }

@@ -2,8 +2,8 @@
   "name": "@ruanitto/ngx-local-storage",
   "version": "1.1.2",
   "description": "LocalStorageService for Angular with mostly the same API (and most of the code) from angular-local-storage",
-  "main": "bundles/ruanitto-ngx-local-storage.umd.js",
-  "typings": "ruanitto-ngx-local-storage.d.ts",
+  "main": "dist/index.js",
+  "typings": "index.d.ts",
   "author": "Craig Spence <craigspence0@gmail.com>",
   "keywords": [
     "ngx",
@@ -28,15 +28,23 @@
     "@angular/common": ">=7.0.0",
     "@angular/core": ">=7.0.0",
     "@angular/platform-browser": ">=7.0.0",
-    "rxjs": ">6.0.0"
+    "crypto-js": "^4.2.0",
+    "rxjs": ">=6.0.0"
   },
-  "module": "fesm2015/ruanitto-ngx-local-storage.js",
-  "es2015": "fesm2015/ruanitto-ngx-local-storage.js",
-  "esm2015": "esm2015/ruanitto-ngx-local-storage.js",
-  "fesm2015": "fesm2015/ruanitto-ngx-local-storage.js",
-  "metadata": "ruanitto-ngx-local-storage.metadata.json",
+  "module": "fesm2022/ruanitto-ngx-local-storage.mjs",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./index.d.ts",
+      "esm2022": "./esm2022/ruanitto-ngx-local-storage.mjs",
+      "esm": "./esm2022/ruanitto-ngx-local-storage.mjs",
+      "default": "./fesm2022/ruanitto-ngx-local-storage.mjs"
+    }
+  },
   "sideEffects": false,
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.3.0"
   }
 }

@@ -4,9 +4,13 @@ LocalStorageService for Angular with mostly the same API (and most of the code) 
 
 AoT compatible.
 
+## NEW Feature added
+
+* Addeded feature to encrypt/decrypt storage data
+
 ## Differences
 
-* No events broadcast on $rootScope - LocalStorageService exposes observables for `errors$`, `removeItems$`, `setItems$` and `warning$` if you really need something to happen when something happens.
+* No events broadcast on $rootScope - LocalStorageService exposes observables for `errors$`,`removeItems$`, `setItems$` and `warning$` if you really need something to happen when something happens.
 * The `bind` function doesn't work anymore (there is a stub so this can still be a drop-in, but it'll do nothing).
 
 ## Install
@@ -24,7 +28,9 @@ import { LocalStorageModule } from '@ruanitto/ngx-local-storage';
     imports: [
         LocalStorageModule.forRoot({
             prefix: 'my-app',
-            storageType: 'localStorage'
+            storageType: 'localStorage',
+            encrypt: true,
+            encryptKey: 'securekey'
         })
     ],
     declarations: [
