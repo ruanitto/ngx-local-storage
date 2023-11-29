@@ -54,7 +54,7 @@ import { LocalStorageService } from '@ruanitto/ngx-local-storage';
 })
 export class SomeComponent {
     constructor (
-        private _localStorageService: LocalStorageService
+        private localStorageService: LocalStorageService
     ) {
         // YAY!
     }

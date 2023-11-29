@@ -1,6 +1,6 @@
 {
   "name": "@ruanitto/ngx-local-storage",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "LocalStorageService for Angular with mostly the same API (and most of the code) from angular-local-storage",
   "main": "dist/index.js",
   "typings": "index.d.ts",
@@ -31,6 +31,10 @@
     "crypto-js": "^4.2.0",
     "rxjs": ">=6.0.0"
   },
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "tslib": "^2.3.0"
+  },
   "module": "fesm2022/ruanitto-ngx-local-storage.mjs",
   "exports": {
     "./package.json": {
@@ -43,8 +47,5 @@
       "default": "./fesm2022/ruanitto-ngx-local-storage.mjs"
     }
   },
-  "sideEffects": false,
-  "dependencies": {
-    "tslib": "^2.3.0"
-  }
+  "sideEffects": false
 }
