@@ -1,5 +1,5 @@
 import { Inject, Injectable, Optional } from "@angular/core";
-import CryptoJS from "crypto-js";
+import CryptoES from "crypto-es";
 import { Observable, Subscriber } from "rxjs";
 import { share } from "rxjs/operators";
 import { ILocalStorageEvent } from "./local-storage-events.interface";
@@ -330,12 +330,12 @@ export class LocalStorageService {
   }
 
   private encrypt(txt: string): string {
-    return CryptoJS.AES.encrypt(txt, this.key).toString();
+    return CryptoES.AES.encrypt(txt, this.key).toString();
   }
 
   private decrypt(txtToDecrypt: string) {
-    return CryptoJS.AES.decrypt(txtToDecrypt, this.key).toString(
-      CryptoJS.enc.Utf8
+    return CryptoES.AES.decrypt(txtToDecrypt, this.key).toString(
+      CryptoES.enc.Utf8
     );
   }
 }

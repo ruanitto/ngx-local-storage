@@ -31,7 +31,6 @@
     "@angular/common": ">=7.0.0",
     "@angular/core": ">=7.0.0",
     "@angular/platform-browser": ">=7.0.0",
-    "crypto-js": "^4.2.0",
     "rxjs": ">=6.0.0"
   },
   "devDependencies": {
@@ -48,6 +47,6 @@
     "zone.js": ">=0.10.3"
   },
   "dependencies": {
-    "crypto-js": "^4.2.0"
+    "crypto-es": "^2.1.0"
   }
 }
