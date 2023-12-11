@@ -47,8 +47,5 @@
     "tsickle": "^0.39.1",
     "typescript": "3.9.6",
     "zone.js": "0.10.3"
-  },
-  "resolutions": {
-    "@types/node": "18.11.9"
   }
 }
