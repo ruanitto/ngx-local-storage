@@ -1,6 +1,6 @@
 {
   "name": "@ruanitto/ngx-local-storage",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "LocalStorageService for Angular with mostly the same API (and most of the code) from angular-local-storage",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
