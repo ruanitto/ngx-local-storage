@@ -94,3 +94,48 @@ export class SomeComponent {
 ### Configuration options
 
 `import { ILocalStorageServiceConfig } from '@ruanitto/ngx-local-storage';` for type information about the configuration object.
+
+### Testing
+
+For unit tests, use `provideMockLocalStorage` in your `TestBed` providers (or standalone app config). It defaults to a `test-app` prefix and can optionally back the service with an in-memory `Storage`, fully isolating tests from real persisted data:
+
+```typescript
+import { TestBed } from '@angular/core/testing';
+import {
+    provideMockLocalStorage,
+    LOCAL_STORAGE_MOCK_STORAGE,
+    LocalStorageService
+} from '@ruanitto/ngx-local-storage';
+
+describe('SomeComponent', () => {
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                provideMockLocalStorage(
+                    { prefix: 'test-app', storageType: 'localStorage' },
+                    { inMemoryStorage: true }
+                )
+            ]
+        });
+    });
+
+    it('isolates storage per test', () => {
+        const service = TestBed.inject(LocalStorageService);
+        const mock = TestBed.inject(LOCAL_STORAGE_MOCK_STORAGE); // inspect/clear between tests
+
+        service.set('user', { name: 'Rafael' });
+
+        expect(service.get('user')).toEqual({ name: 'Rafael' });
+        expect(mock.length).toBe(1);
+    });
+});
+```
+
+Without `{ inMemoryStorage: true }` the helper behaves like `provideLocalStorage` with test-friendly defaults, using the environment's real storage.
+
+The package ships its own specs (`npm test`) with 100% coverage; run them with:
+
+```
+npm run test
+npm run test:coverage
+```

@@ -9,6 +9,14 @@
 ### Features
 
 * **standalone:** added `provideLocalStorage()` for standalone apps / `ApplicationConfig` providers
+* **testing:** added `provideMockLocalStorage()` with optional in-memory storage backend (`LocalStorageMock` + `LOCAL_STORAGE_MOCK_STORAGE` token)
+* **tests:** full unit test suite (Vitest + jsdom) with 100% statement/branch/function coverage
+
+### Performance
+
+* **crypto-es:** import only `AES`/`Utf8` modules instead of the whole library (smaller consumer bundles)
+* **clearAll:** snapshot keys before mutating the storage, avoiding skipped entries during iteration; removed an unreachable error branch
+* **set:** skip JSON serialization when storage is not supported
 
 <a name="4.0.0"></a>
 # 4.0.0 (2020-07-09)

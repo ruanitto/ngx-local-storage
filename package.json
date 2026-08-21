@@ -2,8 +2,8 @@
   "name": "@ruanitto/ngx-local-storage",
   "version": "17.0.0",
   "description": "LocalStorageService for Angular with mostly the same API (and most of the code) from angular-local-storage",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "fesm2022/ngx-local-storage.mjs",
+  "typings": "index.d.ts",
   "author": "Craig Spence <craigspence0@gmail.com>",
   "keywords": [
     "ngx",
@@ -15,7 +15,11 @@
     "localstorage"
   ],
   "scripts": {
-    "build": "ng-packagr"
+    "build": "ng-packagr",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run test && npm run build",
+    "release": "npm run build && cd dist && npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -41,10 +45,13 @@
     "@angular/compiler-cli": "~17.3.0",
     "@angular/core": "~17.3.0",
     "@angular/platform-browser": "~17.3.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "jsdom": "^24.0.0",
     "ng-packagr": "^17.3.0",
     "rxjs": "~7.8.1",
     "tslib": "~2.6.2",
     "typescript": "~5.4.5",
+    "vitest": "^1.6.0",
     "zone.js": "~0.14.10"
   },
   "resolutions": {

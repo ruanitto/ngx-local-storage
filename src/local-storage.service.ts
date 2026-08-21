@@ -1,8 +1,10 @@
 import { Inject, Injectable, Optional } from "@angular/core";
-import CryptoES from "crypto-es";
+import { AES } from "crypto-es/lib/aes.js";
+import { Utf8 } from "crypto-es/lib/core.js";
 import { Observable, Subscriber } from "rxjs";
 import { share } from "rxjs/operators";
 import { ILocalStorageEvent } from "./local-storage-events.interface";
+import { LOCAL_STORAGE_MOCK_STORAGE } from "./local-storage-mock.storage";
 import {
   ILocalStorageServiceConfig,
   LOCAL_STORAGE_SERVICE_CONFIG,
@@ -32,6 +34,7 @@ export class LocalStorageService {
   private prefix: string = "ls";
   private storageType: "sessionStorage" | "localStorage" = "localStorage";
   private webStorage: Storage;
+  private mockedStorage: Storage | null = null;
 
   private encryptData: boolean = false;
   private key: string = "";
@@ -46,8 +49,13 @@ export class LocalStorageService {
   constructor(
     @Optional()
     @Inject(LOCAL_STORAGE_SERVICE_CONFIG)
-    config: ILocalStorageServiceConfig = {}
+    config: ILocalStorageServiceConfig = {},
+    @Optional()
+    @Inject(LOCAL_STORAGE_MOCK_STORAGE)
+    mockedStorage?: Storage | null,
   ) {
+    this.mockedStorage = mockedStorage ?? null;
+
     let { notifyOptions, prefix, storageType, encrypt, encryptKey } = config;
 
     if (notifyOptions != null) {
@@ -72,20 +80,20 @@ export class LocalStorageService {
     }
 
     this.errors$ = new Observable<string>(
-      (observer: Subscriber<string>) => (this.errors = observer)
+      (observer: Subscriber<string>) => (this.errors = observer),
     ).pipe(share());
 
     this.removeItems$ = new Observable<ILocalStorageEvent>(
       (observer: Subscriber<ILocalStorageEvent>) =>
-        (this.removeItems = observer)
+        (this.removeItems = observer),
     ).pipe(share());
 
     this.setItems$ = new Observable<ILocalStorageEvent>(
-      (observer: Subscriber<ILocalStorageEvent>) => (this.setItems = observer)
+      (observer: Subscriber<ILocalStorageEvent>) => (this.setItems = observer),
     ).pipe(share());
 
     this.warnings$ = new Observable<string>(
-      (observer: Subscriber<string>) => (this.warnings = observer)
+      (observer: Subscriber<string>) => (this.warnings = observer),
     ).pipe(share());
 
     this.isSupported = this.checkSupport();
@@ -101,33 +109,38 @@ export class LocalStorageService {
   }
 
   public clearAll(regularExpression?: string): boolean {
-    // Setting both regular expressions independently
-    // Empty strings result in catchall RegExp
-    let prefixRegex = !!this.prefix
-      ? new RegExp("^" + this.prefix)
-      : new RegExp("");
-
-    let testRegex = !!regularExpression
-      ? new RegExp(regularExpression)
-      : new RegExp("");
-
     if (!this.isSupported) {
       this.warnings.next(LOCAL_STORAGE_NOT_SUPPORTED);
+
       return false;
     }
 
-    let prefixLength = this.prefix.length;
+    const testRegex = !!regularExpression
+      ? new RegExp(regularExpression)
+      : new RegExp("");
+    const prefixLength = this.prefix.length;
 
-    for (let key in this.webStorage) {
-      // Only remove items that are for this app and match the regular expression
-      if (prefixRegex.test(key) && testRegex.test(key.substr(prefixLength))) {
-        try {
-          this.remove(key.substr(prefixLength));
-        } catch (e) {
-          this.errors.next(e.message);
-          return false;
-        }
+    // Snapshot the keys before mutating the storage. Deleting entries while
+    // iterating a live Storage can silently skip items.
+    const keysToRemove: Array<string> = [];
+    const total = this.webStorage.length;
+
+    for (let i = 0; i < total; i++) {
+      const rawKey = this.webStorage.key(i);
+
+      if (
+        rawKey !== null &&
+        rawKey.startsWith(this.prefix) &&
+        testRegex.test(rawKey.slice(prefixLength))
+      ) {
+        keysToRemove.push(rawKey.slice(prefixLength));
       }
+    }
+
+    // `remove()` handles its own errors and keeps processing the remaining
+    // keys, so there is no need for an extra failure path here.
+    for (const key of keysToRemove) {
+      this.remove(key);
     }
 
     return true;
@@ -141,26 +154,24 @@ export class LocalStorageService {
     if (!this.isSupported) {
       this.warnings.next(LOCAL_STORAGE_NOT_SUPPORTED);
 
-      return null;
+      return null as T;
     }
 
-    let item = this.webStorage
+    const item = this.webStorage
       ? this.webStorage.getItem(this.deriveKey(key))
       : null;
 
     // FIXME: not a perfect solution, since a valid 'null' string can't be stored
     if (!item || item === "null") {
-      return null;
+      return null as T;
     }
 
     try {
-      if (this.encryptData) {
-        item = this.decrypt(item);
-      }
+      const value = this.encryptData ? this.decrypt(item) : item;
 
-      return JSON.parse(item);
+      return JSON.parse(value);
     } catch (e) {
-      return null;
+      return null as T;
     }
   }
 
@@ -175,29 +186,41 @@ export class LocalStorageService {
       return [];
     }
 
-    let prefixLength = this.prefix.length;
-    let keys: Array<string> = [];
-    for (let key in this.webStorage) {
-      // Only return keys that are for this app
-      if (key.substr(0, prefixLength) === this.prefix) {
-        try {
-          keys.push(key.substr(prefixLength));
-        } catch (e) {
-          this.errors.next(e.message);
+    const prefixLength = this.prefix.length;
+    const result: Array<string> = [];
 
-          return [];
+    try {
+      const total = this.webStorage.length;
+
+      for (let i = 0; i < total; i++) {
+        const rawKey = this.webStorage.key(i);
+
+        // Only return keys that are for this app
+        if (rawKey !== null && rawKey.startsWith(this.prefix)) {
+          result.push(rawKey.slice(prefixLength));
         }
       }
+    } catch (e) {
+      this.errors.next(e.message);
+
+      return [];
     }
 
-    return keys;
+    return result;
   }
 
   public length(): number {
+    if (!this.isSupported || !this.webStorage) {
+      return 0;
+    }
+
     let count = 0;
-    let storage = this.webStorage;
-    for (let i = 0; i < storage.length; i++) {
-      if (storage.key(i).indexOf(this.prefix) === 0) {
+    const total = this.webStorage.length;
+
+    for (let i = 0; i < total; i++) {
+      const rawKey = this.webStorage.key(i);
+
+      if (rawKey !== null && rawKey.startsWith(this.prefix)) {
         count += 1;
       }
     }
@@ -212,10 +235,13 @@ export class LocalStorageService {
       if (!this.isSupported) {
         this.warnings.next(LOCAL_STORAGE_NOT_SUPPORTED);
         result = false;
+
+        return;
       }
 
       try {
         this.webStorage.removeItem(this.deriveKey(key));
+
         if (this.notifyOptions.removeItem) {
           this.removeItems.next({
             key: key,
@@ -232,32 +258,34 @@ export class LocalStorageService {
   }
 
   public set(key: string, value: any): boolean {
-    // Let's convert `undefined` values to `null` to get the value consistent
-    if (value === undefined) {
-      value = null;
-    } else {
-      value = JSON.stringify(value);
-
-      if (this.encryptData) {
-        value = this.encrypt(value);
-      }
-    }
-
     if (!this.isSupported) {
       this.warnings.next(LOCAL_STORAGE_NOT_SUPPORTED);
 
       return false;
     }
 
+    let payload: string;
+
+    // Let's convert `undefined` values to `null` to get the value consistent
+    if (value === undefined) {
+      payload = null as unknown as string;
+    } else {
+      payload = JSON.stringify(value);
+
+      if (this.encryptData) {
+        payload = this.encrypt(payload);
+      }
+    }
+
     try {
       if (this.webStorage) {
-        this.webStorage.setItem(this.deriveKey(key), value);
+        this.webStorage.setItem(this.deriveKey(key), payload);
       }
 
       if (this.notifyOptions.setItem) {
         this.setItems.next({
           key: key,
-          newvalue: value,
+          newvalue: payload,
           storageType: this.storageType,
         });
       }
@@ -271,6 +299,12 @@ export class LocalStorageService {
   }
 
   private checkSupport(): boolean {
+    if (this.mockedStorage != null) {
+      this.webStorage = this.mockedStorage;
+
+      return true;
+    }
+
     try {
       let supported =
         this.storageType in window && window[this.storageType] !== null;
@@ -311,7 +345,7 @@ export class LocalStorageService {
     const PERIOD: string = ".";
 
     if (this.prefix && !this.prefix.endsWith(PERIOD)) {
-      this.prefix = !!this.prefix ? `${this.prefix}${PERIOD}` : "";
+      this.prefix = `${this.prefix}${PERIOD}`;
     }
   }
 
@@ -330,12 +364,10 @@ export class LocalStorageService {
   }
 
   private encrypt(txt: string): string {
-    return CryptoES.AES.encrypt(txt, this.key).toString();
+    return AES.encrypt(txt, this.key).toString();
   }
 
   private decrypt(txtToDecrypt: string) {
-    return CryptoES.AES.decrypt(txtToDecrypt, this.key).toString(
-      CryptoES.enc.Utf8
-    );
+    return AES.decrypt(txtToDecrypt, this.key).toString(Utf8);
   }
 }
