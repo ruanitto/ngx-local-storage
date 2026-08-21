@@ -1,38 +1,37 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
+    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": [
-      "dom",
-      "es6"
-    ],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noEmitOnError": true,
-    "noImplicitAny": false,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "sourceMap": true,
-    "target": "es5",
-    "inlineSources": false,
     "importHelpers": true,
-    "types": [],
+    "esModuleInterop": true,
+    "lib": [
+      "ES2022",
+      "dom"
+    ],
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "strict": false,
+    "target": "ES2022",
+    "skipLibCheck": true,
+    "types": []
   },
   "files": [
     "./src/index.ts"
   ],
   "angularCompilerOptions": {
-    "genDir": "compiled",
-    "debug": true,
-    "skipMetadataEmit": false,
-    "strictMetadataEmit": true,
-    "annotateForClosureCompiler": true,
+    "compilationMode": "partial",
     "skipTemplateCodegen": true,
-    "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true,
-    "enableResourceInlining": true,
+    "enableResourceInlining": true
   }
 }

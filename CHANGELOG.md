@@ -1,3 +1,15 @@
+<a name="17.0.0"></a>
+# 17.0.0 (2026-08-21)
+
+### Breaking changes
+
+* **Updated dependencies** - now targeting Angular ^17.0.0 and RxJs ^6.5.3 || ^7.4.0
+* **Versioning** - starting from this release, the package major version follows the targeted Angular major version (similar to Angular itself). For Angular < 17, use previous releases.
+
+### Features
+
+* **standalone:** added `provideLocalStorage()` for standalone apps / `ApplicationConfig` providers
+
 <a name="4.0.0"></a>
 # 4.0.0 (2020-07-09)
 
