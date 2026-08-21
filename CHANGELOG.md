@@ -1,3 +1,10 @@
+<a name="21.0.0"></a>
+# 21.0.0 (2026-08-21)
+
+### Breaking changes
+
+* **Updated dependencies** - now targeting Angular ^21.0.0 (ng-packagr ^21.2, TypeScript ~5.9)
+
 <a name="20.0.0"></a>
 # 20.0.0 (2026-08-21)
 
