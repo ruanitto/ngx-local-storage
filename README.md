@@ -2,7 +2,7 @@
 
 LocalStorageService for Angular with mostly the same API (and most of the code) from [angular-local-storage](https://github.com/grevory/angular-local-storage).
 
-AoT compatible. Compatible with Angular 21.* (Ivy partial compilation).
+AoT compatible. Compatible with Angular 22.* (Ivy partial compilation).
 
 ## Versioning
 
@@ -10,6 +10,7 @@ Following a versioning scheme similar to Angular itself, starting from `17.0.0` 
 
 | Package version | Angular version |
 | --------------- | --------------- |
+| `22.x`          | `^22.0.0`       |
 | `21.x`          | `^21.0.0`       |
 | `20.x`          | `^20.0.0`       |
 | `19.x`          | `^19.0.0`       |
