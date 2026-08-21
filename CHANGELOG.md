@@ -1,3 +1,11 @@
+<a name="19.0.0"></a>
+# 19.0.0 (2026-08-21)
+
+### Breaking changes
+
+* **Updated dependencies** - now targeting Angular ^19.0.0 (ng-packagr ^19.2, TypeScript ~5.6)
+* **Removed zone.js dev dependency** - unused by the library
+
 <a name="18.0.0"></a>
 # 18.0.0 (2026-08-21)
 
