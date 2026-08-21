@@ -33,7 +33,7 @@ export class LocalStorageService {
   };
   private prefix: string = "ls";
   private storageType: "sessionStorage" | "localStorage" = "localStorage";
-  private webStorage: Storage;
+  private webStorage!: Storage;
   private mockedStorage: Storage | null = null;
 
   private encryptData: boolean = false;
@@ -201,7 +201,7 @@ export class LocalStorageService {
         }
       }
     } catch (e) {
-      this.errors.next(e.message);
+      this.errors.next((e as Error).message);
 
       return [];
     }
@@ -249,7 +249,7 @@ export class LocalStorageService {
           });
         }
       } catch (e) {
-        this.errors.next(e.message);
+        this.errors.next((e as Error).message);
         result = false;
       }
     });
@@ -290,7 +290,7 @@ export class LocalStorageService {
         });
       }
     } catch (e) {
-      this.errors.next(e.message);
+      this.errors.next((e as Error).message);
 
       return false;
     }
@@ -325,7 +325,7 @@ export class LocalStorageService {
 
       return supported;
     } catch (e) {
-      this.errors.next(e.message);
+      this.errors.next((e as Error).message);
 
       return false;
     }
